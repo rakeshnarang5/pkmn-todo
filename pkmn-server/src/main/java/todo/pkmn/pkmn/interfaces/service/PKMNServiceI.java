@@ -15,4 +15,6 @@ public interface PKMNServiceI {
 
 	public List<PKMNDTO> getPKMNByRarity(Long valueOf);
 
+	public List<PKMNDTO> fetchStarter();
+
 }

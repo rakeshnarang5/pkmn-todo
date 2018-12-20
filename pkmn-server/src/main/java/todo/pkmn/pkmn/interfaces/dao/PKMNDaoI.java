@@ -14,5 +14,8 @@ public interface PKMNDaoI extends CrudRepository<PKMNEntity, Long> {
 	
 	@Query("select s from PKMNEntity s where s.rarity = :rarity")
 	List<PKMNEntity> findPKMNEntityByRarity(@Param("rarity") Long rarity);
+
+	@Query("select s from PKMNEntity s where s.id in (:ids)")
+	List<PKMNEntity> fetchStarter(@Param("ids") List<Long> ids);
 	
 }

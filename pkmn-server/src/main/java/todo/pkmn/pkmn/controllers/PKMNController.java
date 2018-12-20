@@ -50,5 +50,10 @@ public class PKMNController {
 	public List<PKMNDTO> getPKMNByRarity(@PathVariable final String rarity) {
 		return pkmnServiceI.getPKMNByRarity(Long.valueOf(rarity));
 	}
+	
+	@RequestMapping(value="/fetchStarter", method=RequestMethod.GET)
+	public List<PKMNDTO> fetchStarter() {
+		return pkmnServiceI.fetchStarter();
+	}
 
 }

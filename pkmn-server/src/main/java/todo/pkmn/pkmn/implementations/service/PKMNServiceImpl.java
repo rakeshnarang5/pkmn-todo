@@ -1,6 +1,7 @@
 package todo.pkmn.pkmn.implementations.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +16,7 @@ import todo.pkmn.pkmn.interfaces.service.PKMNServiceI;
 import todo.pkmn.pkmn.models.PKMNDTO;
 
 @Service
-public class PKMNService implements PKMNServiceI {
+public class PKMNServiceImpl implements PKMNServiceI {
 
 	@Autowired
 	private PKMNDaoI PKMNDaoI;
@@ -23,7 +24,6 @@ public class PKMNService implements PKMNServiceI {
 	@Override
 	public PKMNDTO createPKMN(PKMNDTO pkmndto, Random random) {
 		PKMNEntity pkmnEntity = PKMNDTO.dtoToEntity(pkmndto);
-		pkmnEntity.setWillHatch(calculateHatchResult(pkmnEntity, random));
 		pkmnEntity = PKMNDaoI.save(pkmnEntity);
 		return PKMNDTO.entityToDTO(pkmnEntity);
 	}
@@ -90,12 +90,12 @@ public class PKMNService implements PKMNServiceI {
 		Iterable<PKMNEntity> pkmnEntities = PKMNDaoI.findAll();
 		Map<Long, List<PKMNEntity>> hatchedPkmnEntitiesMap = new HashMap<>();
 		for (PKMNEntity pkmnEntity : pkmnEntities) {
-			pkmnEntity.setWillHatch(calculateHatchResult(pkmnEntity, random));
-			if (pkmnEntity.isWillHatch() && !hatchedPkmnEntitiesMap.containsKey(pkmnEntity.getRarity())) {
+			boolean willHatch = calculateHatchResult(pkmnEntity, random);
+			if (willHatch && !hatchedPkmnEntitiesMap.containsKey(pkmnEntity.getRarity())) {
 				hatchedPkmnEntitiesMap.put(pkmnEntity.getRarity(), new ArrayList<>());
 
 			}
-			if (pkmnEntity.isWillHatch()) {
+			if (willHatch) {
 				System.out.println(pkmnEntity.getName() + ", " + pkmnEntity.getRarity());
 				hatchedPkmnEntitiesMap.get(pkmnEntity.getRarity()).add(pkmnEntity);
 			}
@@ -114,9 +114,22 @@ public class PKMNService implements PKMNServiceI {
 	public List<PKMNDTO> getPKMNByRarity(Long valueOf) {
 		List<PKMNEntity> pkmnEntities = PKMNDaoI.findPKMNEntityByRarity(valueOf);
 		List<PKMNDTO> pkmndtos = new ArrayList<>();
+		convertEntitiesListToDTOs(pkmnEntities, pkmndtos);
+		return pkmndtos;
+	}
+
+	private void convertEntitiesListToDTOs(List<PKMNEntity> pkmnEntities, List<PKMNDTO> pkmndtos) {
 		for(PKMNEntity pkmnEntity : pkmnEntities) {
 			pkmndtos.add(PKMNDTO.entityToDTO(pkmnEntity));
 		}
+	}
+
+	@Override
+	public List<PKMNDTO> fetchStarter() {
+		List<PKMNDTO> pkmndtos = new ArrayList<>();
+		List<Long> ids = Arrays.asList(1l,4l,7l,25l);
+		List<PKMNEntity> pkmnEntities = PKMNDaoI.fetchStarter(ids);
+		convertEntitiesListToDTOs(pkmnEntities, pkmndtos);
 		return pkmndtos;
 	}
 

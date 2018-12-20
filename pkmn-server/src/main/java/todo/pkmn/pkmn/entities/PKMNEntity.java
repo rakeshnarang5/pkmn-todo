@@ -1,16 +1,21 @@
 package todo.pkmn.pkmn.entities;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-public class PKMNEntity {
+public class PKMNEntity implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@Id
 	private Long id;
 	private String name;
 	private Long rarity;
-	private boolean willHatch;
 
 	public Long getId() {
 		return id;
@@ -34,14 +39,6 @@ public class PKMNEntity {
 
 	public void setRarity(Long rarity) {
 		this.rarity = rarity;
-	}
-
-	public boolean isWillHatch() {
-		return willHatch;
-	}
-
-	public void setWillHatch(boolean willHatch) {
-		this.willHatch = willHatch;
 	}
 	
 
