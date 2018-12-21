@@ -10,6 +10,8 @@ public interface UserServiceI {
 
 	Boolean loginUser(LoginDTO loginDTO);
 
-	StarterSelectionDTO selectStarter(StarterSelectionDTO starterSelectionDTO);
+	void selectStarter(StarterSelectionDTO starterSelectionDTO);
+
+	UserDTO getUser(String userName);
 
 }

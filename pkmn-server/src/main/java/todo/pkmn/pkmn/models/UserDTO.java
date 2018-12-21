@@ -20,7 +20,7 @@ public class UserDTO implements Serializable {
 	private String email;
 	
 	private String password;
-
+	
 	public Long getUserId() {
 		return userId;
 	}

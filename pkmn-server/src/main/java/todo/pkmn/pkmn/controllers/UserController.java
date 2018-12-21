@@ -1,6 +1,8 @@
 package todo.pkmn.pkmn.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,8 +27,14 @@ public class UserController {
 	}
 	
 	@RequestMapping(method=RequestMethod.POST, value="/selectStarter")
-	public StarterSelectionDTO selectStarter(@RequestBody final StarterSelectionDTO starterSelectionDTO){
-		return userService.selectStarter(starterSelectionDTO);
+	public ResponseEntity<Boolean> selectStarter(@RequestBody final StarterSelectionDTO starterSelectionDTO){
+		userService.selectStarter(starterSelectionDTO);
+		return ResponseEntity.ok(true);
+	}
+	
+	@RequestMapping(method=RequestMethod.GET, value="/getUser/{userName}")
+	public UserDTO getUser(@PathVariable final String userName){
+		return userService.getUser(userName);
 	}
 
 }

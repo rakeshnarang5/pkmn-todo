@@ -1,11 +1,15 @@
 package todo.pkmn.pkmn.entities;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class UserEntity implements Serializable {
@@ -24,6 +28,9 @@ public class UserEntity implements Serializable {
 	private String email;
 	
 	private String password;
+	
+	@OneToMany(mappedBy = "userEntity", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+	List<UserPokemonEntity> userPokemonEntities;
 	
 	public String getPassword() {
 		return password;
